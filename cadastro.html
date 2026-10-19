@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Criar conta - FlashByte</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--azul:#0B57D0;--tinta:#1F1F1F;--cinza:#444746;--borda:#747775;--erro:#B3261E}
+*{box-sizing:border-box;margin:0}
+body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:16px;background:#F0F4F9;font:14px/1.43 Roboto,"Segoe UI",Arial,sans-serif;color:var(--tinta)}
+.card{width:100%;max-width:900px;display:grid;grid-template-columns:1fr 1fr;gap:32px;padding:36px 40px;background:#fff;border-radius:28px}
+#logo{display:block;width:48px;height:48px;border-radius:12px;object-fit:cover}
+h1{font:400 24px/1.33 Roboto,Arial,sans-serif;margin:20px 0 12px}
+#sub{font-size:16px}
+.chip{display:inline-flex;align-items:center;gap:8px;margin-top:4px;padding:4px 12px 4px 4px;border:1px solid #C4C7C5;border-radius:16px;background:#fff;font:500 14px Roboto,Arial,sans-serif;cursor:pointer}
+.chip i{width:24px;height:24px;border-radius:50%;background:var(--azul)}
+.campo{position:relative;margin-top:24px}
+.campo input{width:100%;height:56px;padding:16px;font:16px Roboto,Arial,sans-serif;border:1px solid var(--borda);border-radius:4px;outline:0;background:transparent}
+.campo label{position:absolute;left:12px;top:16px;padding:0 4px;background:#fff;color:var(--cinza);font-size:16px;pointer-events:none;transition:all .15s}
+.campo input:focus+label,.campo input:not(:placeholder-shown)+label{top:-9px;font-size:12px}
+.campo input:focus{border:2px solid var(--azul);padding:15px}
+.campo input:focus+label{color:var(--azul)}
+.campo.erro input,.campo.erro input:focus{border-color:var(--erro)}
+.campo.erro label{color:var(--erro)}
+.msg{min-height:18px;margin:6px 16px 0;color:var(--erro);font-size:12px}
+.info{margin-top:24px;color:var(--cinza)}
+.mostrar{display:flex;align-items:center;gap:12px;margin-top:8px;cursor:pointer}
+.mostrar input{width:18px;height:18px;accent-color:var(--azul)}
+.acoes{display:flex;justify-content:space-between;align-items:center;margin-top:40px}
+.link{display:inline-block;padding:8px;margin-left:-8px;border-radius:4px;color:var(--azul);font:500 14px Roboto,Arial,sans-serif;text-decoration:none}
+.link:hover{background:#EDF2FA}
+.btn{height:40px;padding:0 24px;border:0;border-radius:20px;background:var(--azul);color:#fff;font:500 14px Roboto,Arial,sans-serif;cursor:pointer}
+.btn:hover{background:#0A4DB9;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.btn:disabled{background:#C4C7C5;box-shadow:none;cursor:default}
+:focus-visible{outline:2px solid var(--tinta);outline-offset:2px}
+footer{display:flex;gap:24px;font-size:12px;color:var(--cinza)}
+footer a{color:inherit}
+@media(max-width:700px){.card{grid-template-columns:1fr;max-width:450px;padding:32px 24px;gap:0}}
+@media(prefers-reduced-motion:reduce){.campo label{transition:none}}
+</style>
+</head>
+<body>
+<main class="card">
+  <div>
+    <img id="logo" alt="FlashByte" width="48" height="48">
+    <h1 id="titulo"></h1>
+    <p id="sub"></p>
+  </div>
+
+  <form id="f" novalidate>
+    <section id="e1">
+      <div class="campo">
+        <input id="nome" type="text" placeholder=" " autocomplete="given-name" autofocus>
+        <label for="nome">Nome</label>
+        <div class="msg" aria-live="polite"></div>
+      </div>
+      <div class="campo">
+        <input id="sobrenome" type="text" placeholder=" " autocomplete="family-name">
+        <label for="sobrenome">Sobrenome (opcional)</label>
+        <div class="msg" aria-live="polite"></div>
+      </div>
+      <p class="info">Página de demonstração: nenhum dado é enviado nem salvo.</p>
+    </section>
+
+    <section id="e2" hidden>
+      <div class="campo">
+        <input id="email" type="email" placeholder=" " autocomplete="username">
+        <label for="email">E-mail</label>
+        <div class="msg" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="e3" hidden>
+      <div class="campo">
+        <input id="senha" type="password" placeholder=" " autocomplete="new-password">
+        <label for="senha">Senha</label>
+        <div class="msg" aria-live="polite"></div>
+      </div>
+      <div class="campo">
+        <input id="confirmar" type="password" placeholder=" " autocomplete="new-password">
+        <label for="confirmar">Confirmar senha</label>
+        <div class="msg" aria-live="polite"></div>
+      </div>
+      <label class="mostrar"><input type="checkbox" id="mostrar"> Mostrar senha</label>
+    </section>
+
+    <div class="acoes">
+      <a class="link" id="alt" href="entrar.html">Já tenho uma conta</a>
+      <button class="btn" id="prox">Próxima</button>
+    </div>
+  </form>
+</main>
+
+<footer><span>Português (Brasil)</span><a href="index.html">Voltar às notícias</a><a href="ajuda.html">Ajuda</a></footer>
+
+<script>
+// Imagens do site: endereços originais, guardados em um único lugar.
+const IMAGENS = { logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9OArYGw5ZEu5GhI000lCCpuoVoQ_YbuHyzAap84S37w&s=10" };
+
+const ETAPAS = [
+  { titulo: 'Criar sua conta FlashByte', sub: 'Insira seu nome', botao: 'Próxima', foco: 'nome' },
+  { titulo: 'Seu e-mail', sub: 'Use o e-mail com que você vai entrar', botao: 'Próxima', foco: 'email' },
+  { titulo: 'Crie uma senha', sub: 'Use 8 caracteres ou mais', botao: 'Criar conta', foco: 'senha' }
+];
+
+const $ = id => document.getElementById(id);
+let etapa = 1;
+
+$('logo').src = IMAGENS.logo;
+$('logo').onerror = () => { $('logo').hidden = true; };
+
+function erro(input, texto) {
+  const campo = input.closest('.campo');
+  campo.classList.toggle('erro', !!texto);
+  campo.querySelector('.msg').textContent = texto || '';
+  input.setAttribute('aria-invalid', !!texto);
+  if (texto) input.focus();
+}
+
+function ir(n) {
+  etapa = n;
+  const e = ETAPAS[n - 1];
+  [1, 2, 3].forEach(i => { $('e' + i).hidden = i !== n; });
+  $('titulo').textContent = e.titulo;
+  $('sub').textContent = e.sub;
+  $('prox').textContent = e.botao;
+  $('alt').textContent = n === 1 ? 'Já tenho uma conta' : 'Voltar';
+  $('alt').href = n === 1 ? 'entrar.html' : '#';
+  $(e.foco).focus();
+}
+
+// PONTO DE INTEGRAÇÃO COM O BACK-END: troque o corpo desta função por um
+// fetch() ao seu servidor. A senha deve ir por HTTPS e ser guardada no banco
+// como hash (por exemplo, bcrypt), nunca como texto puro.
+function cadastrar(dados) {
+  return new Promise(ok => setTimeout(ok, 600));
+}
+
+document.querySelectorAll('.campo input').forEach(i => i.addEventListener('input', () => erro(i)));
+$('mostrar').addEventListener('change', e => {
+  const tipo = e.target.checked ? 'text' : 'password';
+  $('senha').type = tipo;
+  $('confirmar').type = tipo;
+});
+$('alt').addEventListener('click', e => {
+  if (etapa > 1) { e.preventDefault(); ir(etapa - 1); }
+});
+
+$('f').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  if (etapa === 1) {
+    if (!$('nome').value.trim()) return erro($('nome'), 'Digite seu nome');
+    return ir(2);
+  }
+
+  if (etapa === 2) {
+    const v = $('email').value.trim();
+    if (!v) return erro($('email'), 'Digite um e-mail');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return erro($('email'), 'Insira um e-mail válido');
+    return ir(3);
+  }
+
+  if ($('senha').value.length < 8) return erro($('senha'), 'Use pelo menos 8 caracteres');
+  if ($('confirmar').value !== $('senha').value) return erro($('confirmar'), 'As senhas não coincidem');
+
+  $('prox').disabled = true;
+  $('prox').textContent = 'Criando…';
+  await cadastrar({
+    nome: $('nome').value.trim(),
+    sobrenome: $('sobrenome').value.trim(),
+    email: $('email').value.trim(),
+    senha: $('senha').value
+  });
+  location.href = 'entrar.html';
+});
+
+ir(1);
+</script>
+</body>
+</html>
